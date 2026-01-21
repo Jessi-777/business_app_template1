@@ -1,0 +1,819 @@
+import { useState, useEffect } from "react";
+
+export default function Dashboard() {
+  const [analytics, setAnalytics] = useState({
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}  );    </div>      )}        </div>          </div>            </form>              </div>                </button>                  Create Affiliate                >                  className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all"                  type="submit"                <button                </button>                  Cancel                >                  className="flex-1 px-6 py-3 bg-white/5 text-white rounded-lg hover:bg-white/10 transition-all"                  onClick={() => setShowCreateModal(false)}                  type="button"                <button              <div className="flex gap-3 mt-6">              </div>                />                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-500 focus:outline-none"                  onChange={(e) => setNewAffiliate({ ...newAffiliate, commissionRate: parseFloat(e.target.value) })}                  value={newAffiliate.commissionRate}                  step="0.5"                  max="100"                  min="0"                  required                  type="number"                <input                <label className="block text-white/80 mb-2 text-sm">Commission Rate (%)</label>              <div>              </div>                />                  maxLength={20}                  placeholder="JOHN10"                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:border-purple-500 focus:outline-none uppercase"                  onChange={(e) => setNewAffiliate({ ...newAffiliate, code: e.target.value.toUpperCase() })}                  value={newAffiliate.code}                  required                  type="text"                <input                <label className="block text-white/80 mb-2 text-sm">Affiliate Code</label>              <div>              </div>                />                  placeholder="john@example.com"                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-500 focus:outline-none"                  onChange={(e) => setNewAffiliate({ ...newAffiliate, email: e.target.value })}                  value={newAffiliate.email}                  required                  type="email"                <input                <label className="block text-white/80 mb-2 text-sm">Email</label>              <div>              </div>                />                  placeholder="John Doe"                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-500 focus:outline-none"                  onChange={(e) => setNewAffiliate({ ...newAffiliate, name: e.target.value })}                  value={newAffiliate.name}                  required                  type="text"                <input                <label className="block text-white/80 mb-2 text-sm">Name</label>              <div>            <form onSubmit={handleCreateAffiliate} className="space-y-4">            <h2 className="text-2xl font-bold text-white mb-6">Create New Affiliate</h2>          <div className="bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-2xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(168,85,247,0.3)]">        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">      {showCreateModal && (      {/* Create Modal */}      </div>        </div>          </table>            </tbody>              )}                ))                  </tr>                    </td>                      </div>                        </button>                          🗑️                        >                          title="Delete affiliate"                          className="px-3 py-1 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all text-sm"                          onClick={() => handleDeleteAffiliate(affiliate._id)}                        <button                        )}                          </button>                            💰 Pay                          >                            title="Pay commission"                            className="px-3 py-1 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-all text-sm"                            onClick={() => handlePayCommission(affiliate._id, affiliate.unpaidCommission)}                          <button                        {affiliate.unpaidCommission > 0 && (                      <div className="flex gap-2 justify-center">                    <td className="p-4">                    </td>                      ${affiliate.unpaidCommission.toFixed(2)}                    <td className="p-4 text-right text-yellow-400 font-semibold">                    </td>                      <div className="text-white/60 text-sm">{affiliate.commissionRate}%</div>                      <div className="text-white font-semibold">${affiliate.totalCommission.toFixed(2)}</div>                    <td className="p-4 text-right">                    <td className="p-4 text-right text-white font-semibold">${affiliate.totalRevenue.toLocaleString()}</td>                    <td className="p-4 text-right text-white font-semibold">{affiliate.totalSales}</td>                    </td>                      </span>                        {affiliate.status}                      <span className={`px-3 py-1 rounded-lg text-sm border ${getStatusColor(affiliate.status)}`}>                    <td className="p-4">                    </td>                      </span>                        {affiliate.tier}                      <span className={`px-3 py-1 rounded-lg text-sm border ${getTierColor(affiliate.tier)}`}>                    <td className="p-4">                    </td>                      </code>                        {affiliate.code}                      <code className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded font-mono text-sm">                    <td className="p-4">                    </td>                      <div className="text-white/60 text-sm">{affiliate.email}</div>                      <div className="text-white font-semibold">{affiliate.name}</div>                    <td className="p-4">                  <tr key={affiliate._id} className="border-b border-white/5 hover:bg-white/5 transition-colors">                affiliates.map((affiliate) => (              ) : (                </tr>                  </td>                    No affiliates yet. Create your first affiliate to get started!                  <td colSpan="9" className="text-center py-12 text-white/60">                <tr>              {affiliates.length === 0 ? (            <tbody>            </thead>              </tr>                <th className="text-center p-4 text-white/80 font-semibold">Actions</th>                <th className="text-right p-4 text-white/80 font-semibold">Owed</th>                <th className="text-right p-4 text-white/80 font-semibold">Commission</th>                <th className="text-right p-4 text-white/80 font-semibold">Revenue</th>                <th className="text-right p-4 text-white/80 font-semibold">Sales</th>                <th className="text-left p-4 text-white/80 font-semibold">Status</th>                <th className="text-left p-4 text-white/80 font-semibold">Tier</th>                <th className="text-left p-4 text-white/80 font-semibold">Code</th>                <th className="text-left p-4 text-white/80 font-semibold">Affiliate</th>              <tr>            <thead className="bg-white/5 border-b border-white/10">          <table className="w-full">        <div className="overflow-x-auto">      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden">      {/* Affiliates Table */}      </div>        </div>          <div className="text-white/60 text-sm mt-1">{stats.totalClicks || 0} clicks</div>          <div className="text-3xl font-bold text-white">{stats.conversionRate || 0}%</div>          <div className="text-white/60 text-sm mb-1">Avg Conversion</div>        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">        </div>          <div className="text-white/60 text-sm mt-1">Unpaid balance</div>          <div className="text-3xl font-bold text-yellow-400">${(stats.unpaidCommission || 0).toLocaleString()}</div>          <div className="text-white/60 text-sm mb-1">Commission Owed</div>        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">        </div>          <div className="text-white/60 text-sm mt-1">{stats.totalSales || 0} sales</div>          <div className="text-3xl font-bold text-white">${(stats.totalRevenue || 0).toLocaleString()}</div>          <div className="text-white/60 text-sm mb-1">Total Revenue</div>        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">        </div>          <div className="text-green-400 text-sm mt-1">{stats.activeAffiliates || 0} active</div>          <div className="text-3xl font-bold text-white">{stats.totalAffiliates || 0}</div>          <div className="text-white/60 text-sm mb-1">Total Affiliates</div>        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">      {/* Stats Overview */}      </div>        </button>          + Create New Affiliate        >          className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all duration-300"          onClick={() => setShowCreateModal(true)}        <button        </div>          </p>            Manage your affiliate partners and track their performance          <p className="text-white/70 text-lg">          </h1>            🤝 Affiliate Management          <h1 className="text-5xl font-bold text-white mb-2 tracking-wider drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">        <div>      <div className="flex justify-between items-center mb-8">      {/* Header */}    <div className="min-h-screen bg-black p-8">  return (  }    );      </div>        <div className="text-white text-xl">Loading affiliates...</div>      <div className="min-h-screen bg-black flex items-center justify-center">    return (  if (loading) {  };    return colors[status] || colors.active;    };      suspended: 'bg-red-500/20 text-red-400 border-red-500/40'      inactive: 'bg-gray-500/20 text-gray-400 border-gray-500/40',      pending: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',      active: 'bg-green-500/20 text-green-400 border-green-500/40',    const colors = {  const getStatusColor = (status) => {  };    return colors[tier] || colors.Bronze;    };      Platinum: 'bg-purple-500/20 text-purple-400 border-purple-500/40'      Gold: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',      Silver: 'bg-gray-400/20 text-gray-300 border-gray-400/40',      Bronze: 'bg-orange-500/20 text-orange-400 border-orange-500/40',    const colors = {  const getTierColor = (tier) => {  };    }      console.error('Error paying commission:', error);    } catch (error) {      }        alert('Commission payment recorded successfully!');        fetchStats();        fetchAffiliates();      if (response.ok) {      });        body: JSON.stringify({ amount })        headers: { 'Content-Type': 'application/json' },        method: 'POST',      const response = await fetch(`http://localhost:5001/api/affiliates/pay/${id}`, {    try {  const handlePayCommission = async (id, amount) => {  };    }      console.error('Error deleting affiliate:', error);    } catch (error) {      }        fetchStats();        fetchAffiliates();      if (response.ok) {      });        method: 'DELETE'      const response = await fetch(`http://localhost:5001/api/affiliates/${id}`, {    try {    if (!confirm('Are you sure you want to delete this affiliate?')) return;  const handleDeleteAffiliate = async (id) => {  };    }      alert('Failed to create affiliate');      console.error('Error creating affiliate:', error);    } catch (error) {      }        alert(error.message || 'Failed to create affiliate');        const error = await response.json();      } else {        fetchStats();        fetchAffiliates();        setNewAffiliate({ name: '', email: '', code: '', commissionRate: 10 });        setShowCreateModal(false);      if (response.ok) {      });        body: JSON.stringify(newAffiliate)        headers: { 'Content-Type': 'application/json' },        method: 'POST',      const response = await fetch('http://localhost:5001/api/affiliates', {    try {    e.preventDefault();  const handleCreateAffiliate = async (e) => {  };    }      console.error('Error fetching stats:', error);    } catch (error) {      }        setStats(data);        const data = await response.json();      if (response.ok) {      const response = await fetch('http://localhost:5001/api/affiliates/stats');    try {  const fetchStats = async () => {  };    }      setLoading(false);      console.error('Error fetching affiliates:', error);    } catch (error) {      setLoading(false);      }        setAffiliates(data);        const data = await response.json();      if (response.ok) {      const response = await fetch('http://localhost:5001/api/affiliates');    try {  const fetchAffiliates = async () => {  }, []);    fetchStats();    fetchAffiliates();  useEffect(() => {  });    commissionRate: 10    code: '',    email: '',    name: '',  const [newAffiliate, setNewAffiliate] = useState({  const [showCreateModal, setShowCreateModal] = useState(false);  const [loading, setLoading] = useState(true);  const [stats, setStats] = useState({});    totalOrders: 0,
+    totalRevenue: 0,
+    monthlyRevenue: 0,
+    averageOrderValue: 0,
+    pendingOrders: 0,
+    processingOrders: 0,
+    completedOrders: 0,
+    statusBreakdown: {},
+    recentOrders: []
+  });
+  const [affiliateStats, setAffiliateStats] = useState({
+    totalAffiliates: 0,
+    activeAffiliates: 0,
+    totalSales: 0,
+    totalRevenue: 0,
+    unpaidCommission: 0,
+    conversionRate: 0,
+    tierBreakdown: {
+      Bronze: 0,
+      Silver: 0,
+      Gold: 0,
+      Platinum: 0
+    }
+  });
+  const [topAffiliates, setTopAffiliates] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAnalytics();
+    fetchAffiliateData();
+  }, []);
+
+  const fetchAffiliateData = async () => {
+    try {
+      const [statsRes, topRes] = await Promise.all([
+        fetch('http://localhost:5001/api/affiliates/stats'),
+        fetch('http://localhost:5001/api/affiliates/top?limit=5')
+      ]);
+      
+      if (statsRes.ok) {
+        const stats = await statsRes.json();
+        setAffiliateStats(stats);
+      }
+      
+      if (topRes.ok) {
+        const top = await topRes.json();
+        setTopAffiliates(top);
+      }
+    } catch (error) {
+      console.error('Error fetching affiliate data:', error);
+    }
+  };
+
+  const fetchAnalytics = async () => {
+    try {
+      // Mock data for now - replace with actual API call
+      const mockData = {
+        totalOrders: 326,
+        totalRevenue: 12430,
+        monthlyRevenue: 3250,
+        averageOrderValue: 38.13,
+        pendingOrders: 12,
+        processingOrders: 8,
+        completedOrders: 306,
+        statusBreakdown: {
+          'Pending': 12,
+          'Processing': 5,
+          'Sent to Supplier': 3,
+          'In Production': 8,
+          'Shipped': 15,
+          'Delivered': 283
+        },
+        recentOrders: []
+      };
+      setAnalytics(mockData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+      setLoading(false);
+    }
+  };
+
+  const goals = [
+    { label: 'Monthly Revenue Goal', current: analytics.monthlyRevenue, target: 5000, color: 'from-green-500 to-emerald-600' },
+    { label: 'Orders This Month', current: analytics.pendingOrders + analytics.processingOrders, target: 50, color: 'from-blue-500 to-cyan-600' },
+    { label: 'Customer Satisfaction', current: 94, target: 95, color: 'from-purple-500 to-pink-600' }
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading analytics...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black p-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-5xl font-bold text-white mb-2 tracking-wider drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+          HNA Admin Dashboard
+        </h1>
+        <p className="text-white/70 text-lg">
+          Track performance, manage orders, and grow Human Nature Athletica
+        </p>
+      </div>
+
+      {/* Main Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <MetricCard 
+          title="Total Revenue" 
+          value={`$${analytics.totalRevenue.toLocaleString()}`}
+          icon="💰"
+          trend="+12.5%"
+          trendUp={true}
+        />
+        <MetricCard 
+          title="Total Orders" 
+          value={analytics.totalOrders}
+          icon="📦"
+          trend="+8.3%"
+          trendUp={true}
+        />
+        <MetricCard 
+          title="Avg Order Value" 
+          value={`$${analytics.averageOrderValue.toFixed(2)}`}
+          icon="💳"
+          trend="+3.2%"
+          trendUp={true}
+        />
+        <MetricCard 
+          title="Pending Orders" 
+          value={analytics.pendingOrders}
+          icon="⏳"
+          trend={`${analytics.processingOrders} processing`}
+          trendUp={false}
+        />
+      </div>
+
+      {/* Goals Progress */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-white mb-4 tracking-wide">Goals & Targets</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {goals.map((goal, index) => (
+            <GoalCard key={index} goal={goal} />
+          ))}
+        </div>
+      </div>
+
+      {/* Order Status Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-500">
+          <h2 className="text-2xl font-bold text-white mb-6">Order Status</h2>
+          <div className="space-y-4">
+            {Object.entries(analytics.statusBreakdown).map(([status, count]) => (
+              <StatusBar key={status} status={status} count={count} total={analytics.totalOrders} />
+            ))}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-500">
+          <h2 className="text-2xl font-bold text-white mb-6">Quick Actions</h2>
+          <div className="space-y-3">
+            <QuickActionButton icon="📋" label="View All Orders" href="/admin/orders" />
+            <QuickActionButton icon="➕" label="Create New Order" href="/admin/orders?action=create" />
+            <QuickActionButton icon="📊" label="View Products" href="/admin/products" />
+            <QuickActionButton icon="🚀" label="Send to Suppliers" href="/admin/orders?filter=pending" />
+            <QuickActionButton icon="💵" label="Pricing Rules" href="/admin/pricing" />
+          </div>
+        </div>
+      </div>
+
+      {/* Supplier Integration Status */}
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-500 mb-8">
+        <h2 className="text-2xl font-bold text-white mb-6">Print-on-Demand Supplier Status</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <SupplierStatus name="Printful" status="Connected" ordersInQueue={3} />
+          <SupplierStatus name="Printify" status="Connected" ordersInQueue={5} />
+          <SupplierStatus name="Custom POD" status="Ready" ordersInQueue={0} />
+        </div>
+      </div>
+
+      {/* Affiliate Program Management */}
+      <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-md border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-500">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <span className="text-3xl">🤝</span>
+            Affiliate Program
+          </h2>
+          <button className="px-6 py-2 bg-purple-500/20 border border-purple-500/40 text-purple-300 rounded-xl hover:bg-purple-500/30 transition-all duration-300 font-semibold">
+            Manage Affiliates
+          </button>
+        </div>
+
+        {/* Affiliate Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="text-white/60 text-sm mb-1">Active Affiliates</div>
+            <div className="text-3xl font-bold text-white">{affiliateStats.activeAffiliates}</div>
+            <div className="text-green-400 text-sm mt-1">Total: {affiliateStats.totalAffiliates}</div>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="text-white/60 text-sm mb-1">Commission Owed</div>
+            <div className="text-3xl font-bold text-white">${affiliateStats.unpaidCommission.toLocaleString()}</div>
+            <div className="text-white/60 text-sm mt-1">Due this month</div>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="text-white/60 text-sm mb-1">Affiliate Sales</div>
+            <div className="text-3xl font-bold text-white">${affiliateStats.totalRevenue.toLocaleString()}</div>
+            <div className="text-green-400 text-sm mt-1">{affiliateStats.totalSales} total sales</div>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="text-white/60 text-sm mb-1">Conversion Rate</div>
+            <div className="text-3xl font-bold text-white">{affiliateStats.conversionRate}%</div>
+            <div className="text-white/60 text-sm mt-1">Industry avg: 2.5%</div>
+          </div>
+        </div>
+
+        {/* Affiliate Tiers */}
+        <div className="mb-6">
+          <h3 className="text-lg font-bold text-white mb-4">Commission Tiers</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <AffiliateTier 
+              name="Bronze"
+              commission="10%"
+              requirement="0-19 sales"
+              affiliates={affiliateStats.tierBreakdown.Bronze}
+              color="from-orange-600 to-orange-700"
+            />
+            <AffiliateTier 
+              name="Silver"
+              commission="12%"
+              requirement="20-49 sales"
+              affiliates={affiliateStats.tierBreakdown.Silver}
+              color="from-gray-400 to-gray-500"
+            />
+            <AffiliateTier 
+              name="Gold"
+              commission="15%"
+              requirement="50-99 sales"
+              affiliates={affiliateStats.tierBreakdown.Gold}
+              color="from-yellow-400 to-yellow-600"
+            />
+            <AffiliateTier 
+              name="Platinum"
+              commission="20%"
+              requirement="100+ sales"
+              affiliates={affiliateStats.tierBreakdown.Platinum}
+              color="from-purple-400 to-pink-500"
+            />
+          </div>
+        </div>
+
+        {/* Top Performers */}
+        <div className="mb-6">
+          <h3 className="text-lg font-bold text-white mb-4">Top Performers This Month</h3>
+          <div className="space-y-2">
+            {topAffiliates.length > 0 ? (
+              topAffiliates.map((affiliate) => (
+                <TopAffiliate 
+                  key={affiliate._id}
+                  name={affiliate.name} 
+                  sales={affiliate.totalSales} 
+                  revenue={affiliate.totalRevenue} 
+                  tier={affiliate.tier} 
+                />
+              ))
+            ) : (
+              <div className="text-white/60 text-center py-4">No affiliate data yet. Create your first affiliate to get started!</div>
+            )}
+          </div>
+        </div>
+
+        {/* Affiliate Tools & Resources */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+            <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+              <span>🔗</span>
+              Tracking & Links
+            </h4>
+            <ul className="space-y-2 text-white/70 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Unique tracking links for each affiliate</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Real-time click and conversion tracking</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>30-day cookie attribution window</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Custom coupon codes for affiliates</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+            <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+              <span>📊</span>
+              Reporting & Payouts
+            </h4>
+            <ul className="space-y-2 text-white/70 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Detailed performance dashboards</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Automated monthly commission reports</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Multiple payout methods (PayPal, Stripe, Bank)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400">✓</span>
+                <span>Minimum payout threshold: $50</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-3 gap-3 mt-6">
+          <button className="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-all duration-300 font-medium text-sm">
+            Add New Affiliate
+          </button>
+          <button className="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-all duration-300 font-medium text-sm">
+            Process Payouts
+          </button>
+          <button className="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-all duration-300 font-medium text-sm">
+            View All Reports
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MetricCard({ title, value, icon, trend, trendUp }) {
+  return (
+    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all duration-500">
+      <div className="flex justify-between items-start mb-4">
+        <span className="text-4xl">{icon}</span>
+        <span className={`text-sm px-2 py-1 rounded-lg ${trendUp ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
+          {trend}
+        </span>
+      </div>
+      <h3 className="text-white/70 text-sm mb-1">{title}</h3>
+      <p className="text-3xl font-bold text-white">{value}</p>
+    </div>
+  );
+}
+
+function GoalCard({ goal }) {
+  const percentage = Math.min((goal.current / goal.target) * 100, 100);
+  
+  return (
+    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-500">
+      <h3 className="text-white font-semibold mb-3">{goal.label}</h3>
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-2xl font-bold text-white">{typeof goal.current === 'number' && goal.current < 100 ? goal.current.toFixed(0) : goal.current.toLocaleString()}</span>
+        <span className="text-white/60">/ {goal.target.toLocaleString()}</span>
+      </div>
+      <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+        <div 
+          className={`h-full bg-gradient-to-r ${goal.color} transition-all duration-1000 rounded-full shadow-lg`}
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+      <p className="text-white/60 text-sm mt-2">{percentage.toFixed(1)}% complete</p>
+    </div>
+  );
+}
+
+function StatusBar({ status, count, total }) {
+  const percentage = (count / total) * 100;
+  const colors = {
+    'Pending': 'bg-yellow-500',
+    'Processing': 'bg-blue-500',
+    'Sent to Supplier': 'bg-purple-500',
+    'In Production': 'bg-orange-500',
+    'Shipped': 'bg-cyan-500',
+    'Delivered': 'bg-green-500',
+    'Cancelled': 'bg-red-500'
+  };
+  
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-white/80">{status}</span>
+        <span className="text-white font-semibold">{count}</span>
+      </div>
+      <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+        <div 
+          className={`h-full ${colors[status] || 'bg-gray-500'} transition-all duration-700`}
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+}
+
+function QuickActionButton({ icon, label, href }) {
+  return (
+    <a 
+      href={href}
+      className="flex items-center space-x-3 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all duration-300 group"
+    >
+      <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{icon}</span>
+      <span className="text-white font-medium">{label}</span>
+      <span className="ml-auto text-white/40 group-hover:text-white/80 transition-colors">→</span>
+    </a>
+  );
+}
+
+function SupplierStatus({ name, status, ordersInQueue }) {
+  const isConnected = status === 'Connected' || status === 'Ready';
+  
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/30 transition-all duration-300">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-white font-semibold">{name}</h3>
+        <span className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
+      </div>
+      <p className="text-white/60 text-sm mb-1">{status}</p>
+      <p className="text-white/80 text-sm">Queue: {ordersInQueue} orders</p>
+    </div>
+  );
+}
+
+function AffiliateTier({ name, commission, requirement, affiliates, color }) {
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/30 transition-all duration-300">
+      <div className={`w-full h-1 rounded-full bg-gradient-to-r ${color} mb-3`}></div>
+      <h4 className="text-white font-bold text-lg mb-1">{name}</h4>
+      <div className="text-2xl font-bold text-white mb-2">{commission}</div>
+      <div className="text-white/60 text-sm mb-3">{requirement}</div>
+      <div className="text-white/80 text-sm">
+        <span className="font-semibold">{affiliates}</span> affiliates
+      </div>
+    </div>
+  );
+}
+
+function TopAffiliate({ name, sales, revenue, tier }) {
+  const tierColors = {
+    'Gold': 'text-yellow-400',
+    'Silver': 'text-gray-400',
+    'Bronze': 'text-orange-400'
+  };
+  
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+            {name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div>
+            <div className="text-white font-semibold">{name}</div>
+            <div className={`text-sm ${tierColors[tier]}`}>{tier} Tier</div>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-white font-bold">{sales} sales</div>
+          <div className="text-green-400 text-sm">${revenue.toLocaleString()}</div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,148 @@
+@import "tailwindcss";
+/* Screen Reader Only - Hide visually but keep for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only:focus,
+.sr-only:active {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Font Size Settings */
+[data-font-size="small"] {
+  font-size: 14px;
+}
+
+[data-font-size="medium"] {
+  font-size: 16px;
+}
+
+[data-font-size="large"] {
+  font-size: 18px;
+}
+
+[data-font-size="xl"] {
+  font-size: 20px;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+  --tw-bg-opacity: 1 !important;
+  filter: contrast(1.5);
+}
+
+.high-contrast button,
+.high-contrast a {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.high-contrast img {
+  border: 2px solid white;
+}
+
+/* Reduced Motion */
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Screen Reader Mode Enhancements */
+.screen-reader-mode :focus {
+  outline: 4px solid #4F46E5 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Focus Visible for Keyboard Navigation */
+*:focus-visible {
+  outline: 3px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+/* Improve Button Accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #4F46E5;
+  outline-offset: 3px;
+}
+
+/* Enhanced Link Underlines for Accessibility */
+a:not(.no-underline) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Smooth Scrolling (respects prefers-reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* High Contrast Media Query Support */
+@media (prefers-contrast: high) {
+  :root {
+    filter: contrast(1.3);
+  }
+}
+
+/* Dark Mode Adjustments for Accessibility */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Custom Scrollbar for Better Visibility */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(116, 140, 144, 0.6), rgba(62, 93, 143, 0.6));
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(37, 70, 94, 0.9), rgba(38, 45, 56, 0.9));
+}
+
+/* Selection Styling */
+::selection {
+  background-color: rgba(99, 102, 241, 0.3);
+  color: inherit;
+}
