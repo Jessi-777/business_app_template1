@@ -14,8 +14,10 @@ dotenv.config();
 connectDB();
 
 const app = express();
+    const port = process.env.PORT || 5000;
+    //  const port = process.env.PORT || 4000;
 
-// IMPORTANT: Stripe webhook needs raw body, so add it BEFORE other middleware
+// IMPORTANT: Stripe webhook needs raw body, so add it BEFORE other middleware  
 app.use('/api/checkout/webhook', express.raw({ type: 'application/json' }));
 
 // CORS - allow development ports in development, restrict in production
