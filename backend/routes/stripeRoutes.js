@@ -66,11 +66,21 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
   let event;
 
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+  // Skip webhook verification in development if secret is not configured
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  const hasWebhookSecret = webhookSecret && !webhookSecret.includes('your_webhook_signing_secret');
+
+  if (!isDevelopment || hasWebhookSecret) {
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  } else {
+    // Development mode without webhook secret - parse body directly
+    console.log('⚠️  DEV MODE: Webhook signature verification skipped');
+    event = JSON.parse(req.body.toString());
   }
 
   // Handle the checkout.session.completed event

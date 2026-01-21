@@ -18,9 +18,21 @@ const app = express();
 // IMPORTANT: Stripe webhook needs raw body, so add it BEFORE other middleware
 app.use('/api/checkout/webhook', express.raw({ type: 'application/json' }));
 
-// CORS - restrict to your frontend domain in production
+// CORS - allow development ports in development, restrict in production
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [process.env.CLIENT_URL]
+  : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };

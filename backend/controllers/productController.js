@@ -85,6 +85,10 @@ export const createProduct = async (req, res) => {
     res.status(201).json(createdProduct);
   } catch (error) {
     console.error('Error creating product:', error);
+    // Handle duplicate SKU error
+    if (error.code === 11000 && error.keyPattern?.sku) {
+      return res.status(400).json({ message: 'SKU already exists. Please use a unique SKU or leave it empty.' });
+    }
     res.status(400).json({ message: error.message });
   }
 };
@@ -136,6 +140,11 @@ export const updateProduct = async (req, res) => {
       res.status(404).json({ message: 'Product not found' });
     }
   } catch (error) {
+    console.error('Error updating product:', error);
+    // Handle duplicate SKU error
+    if (error.code === 11000 && error.keyPattern?.sku) {
+      return res.status(400).json({ message: 'SKU already exists. Please use a unique SKU or leave it empty.' });
+    }
     res.status(400).json({ message: error.message });
   }
 };
