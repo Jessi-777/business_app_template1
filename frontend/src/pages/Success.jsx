@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 
 export default function Success() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Success() {
       const amount = localStorage.getItem('pendingAffiliateAmount');
       
       if (affiliateCode && amount) {
-        await fetch(`http://localhost:5001/api/affiliates/sale/${affiliateCode}`, {
+        await fetch(`${API_URL}/api/affiliates/sale/${affiliateCode}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: parseFloat(amount) })
@@ -53,7 +54,7 @@ export default function Success() {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/api/orders?sessionId=${sessionId}`);
+      const response = await fetch(`${API_URL}/api/orders?sessionId=${sessionId}`);
       if (response.ok) {
         const orders = await response.json();
         // Get the most recent order

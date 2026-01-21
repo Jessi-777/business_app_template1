@@ -1,6 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { API_URL } from "../config";
 
 export default function Shop() {
   const { t } = useLanguage();
@@ -10,7 +11,7 @@ export default function Shop() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         const data = await response.json();
         setProducts(data.filter(p => p.isActive !== false));
         setLoading(false);

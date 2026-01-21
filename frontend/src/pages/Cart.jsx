@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useLanguage } from "../context/LanguageContext";
 import CartItem from "../components/CartItem";
+import { API_URL } from "../config";
 
 export default function Cart() {
   const { state } = useCart();
@@ -33,7 +34,7 @@ export default function Cart() {
         localStorage.setItem('pendingAffiliateAmount', subtotal.toString());
       }
       
-      const response = await fetch('http://localhost:5001/api/checkout/create-checkout-session', {
+      const response = await fetch(`${API_URL}/api/checkout/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

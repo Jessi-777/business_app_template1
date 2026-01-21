@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { API_URL } from "../config";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -12,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         const data = await response.json();
         // Get featured products (limit to 6 for homepage)
         setProducts(data.filter(p => p.isActive !== false).slice(0, 6));
@@ -80,7 +81,7 @@ export default function Home() {
         {/* Music Control Button */}
         <button
           onClick={toggleMusic}
-          className="absolute top-8 right-8 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-lg"
+          className="absolute top-8 right-8 z-20 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-lg"
           aria-label={isMusicPlaying ? 'Pause music' : 'Play music'}
           title={isMusicPlaying ? 'Pause music' : 'Play music'}
         >
@@ -117,7 +118,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Link
               to="/shop"
-              className="group relative px-12 py-5 text-lg font-bold text-black bg-white rounded-xl
+              className="group relative px-12 py-5 text-lg font-bold text-black bg-[#b3b3b7d0] rounded-lg
                        hover:scale-110 transition-all duration-300
                        shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)]
                        overflow-hidden"
