@@ -146,13 +146,13 @@ export default function Affiliates() {
         <div className="flex gap-3">
           <Link
             to="/admin/affiliates/sales-report"
-            className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-indigo-500/50 text-white rounded-xl font-semibold transition-all duration-300"
+            className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-[#816539] text-white rounded-xl font-semibold transition-all duration-300"
           >
             📊 Sales Report
           </Link>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-gradient-to-r from-[#1c1e32] to-indigo-900 text-white rounded-xl font-semibold hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-300"
+            className="px-6 py-3 bg-gradient-to-r from-[#1c1e32] to-[#816539]  text-white rounded-xl font-semibold hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-300"
           >
             + Create New Affiliate
           </button>
@@ -282,7 +282,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.name}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, name: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
                   placeholder="John Doe"
                 />
               </div>
@@ -293,7 +293,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.email}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, email: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-indigo-500 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
                   placeholder="john@example.com"
                 />
               </div>
@@ -304,7 +304,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.code}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, code: e.target.value.toUpperCase() })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:border-indigo-500 focus:outline-none uppercase"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:border-black focus:outline-none uppercase"
                   placeholder="JOHN10"
                   maxLength={20}
                 />

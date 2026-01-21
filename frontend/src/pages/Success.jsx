@@ -22,10 +22,34 @@ export default function Success() {
     // Fetch order details from the session
     if (sessionId) {
       fetchOrderDetails();
+      // Testing workaround: Record affiliate sale directly (since webhooks can't reach localhost)
+      recordAffiliateSale();
     } else {
       setLoading(false);
     }
   }, [dispatch, sessionId]);
+
+  const recordAffiliateSale = async () => {
+    try {
+      const affiliateCode = localStorage.getItem('pendingAffiliateCode');
+      const amount = localStorage.getItem('pendingAffiliateAmount');
+      
+      if (affiliateCode && amount) {
+        await fetch(`http://localhost:5001/api/affiliates/sale/${affiliateCode}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: parseFloat(amount) })
+        });
+        
+        // Clear the pending affiliate data
+        localStorage.removeItem('pendingAffiliateCode');
+        localStorage.removeItem('pendingAffiliateAmount');
+        console.log('✅ Affiliate sale recorded for testing');
+      }
+    } catch (error) {
+      console.error('Error recording affiliate sale:', error);
+    }
+  };
 
   const fetchOrderDetails = async () => {
     try {
@@ -191,7 +215,7 @@ export default function Success() {
           {/* Order Info Card */}
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 mb-8 hover:border-indigo-500/30 transition-all duration-300 shadow-xl">
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-black to-[#293037] flex items-center justify-center flex-shrink-0 shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -238,9 +262,9 @@ export default function Success() {
           </div>
 
           {/* Special Offer Banner */}
-          <div className="bg-gradient-to-r from-indigo-900/40 via-purple-900/40 to-indigo-900/40 border border-indigo-500/30 rounded-2xl p-6 mb-8 shadow-xl">
+          <div className="bg-gradient-to-r from-[#303341] glassmorphism to-black border border-indigo-500/30 rounded-2xl p-6 mb-8 shadow-xl">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center flex-shrink-0">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                 </svg>
@@ -257,8 +281,8 @@ export default function Success() {
             <Link
               to="/shop"
               className="group relative px-8 py-5 text-lg font-bold rounded-xl text-center
-                       bg-gradient-to-r from-indigo-600 to-purple-600 text-white
-                       hover:from-indigo-500 hover:to-purple-500
+                       bg-gradient-to-r from-black to-[#24282f] text-white
+                       hover:from-black hover:to-[#1a2431]
                        shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:shadow-[0_0_50px_rgba(99,102,241,0.6)]
                        hover:scale-105 transition-all duration-300"
             >
@@ -280,13 +304,13 @@ export default function Success() {
           <div className="text-center bg-white/5 rounded-xl p-6 border border-white/10">
             <p className="text-white/70 text-sm mb-3">Need help with your order?</p>
             <div className="flex justify-center gap-6">
-              <a href="mailto:support@hna.com" className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors">
+              <a href="mailto:support@hna.com" className="flex items-center gap-2 text-[#93a2c1] hover:text-white  transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="font-medium">Email Support</span>
+                <span className="font-medium text-[#93a2c1] hover:text-white">Email Support</span>
               </a>
-              <a href="#" className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors">
+              <a href="#" className="flex items-center gap-2 text-[#93a2c1] hover:text-white transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>

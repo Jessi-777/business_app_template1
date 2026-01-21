@@ -27,6 +27,12 @@ export default function Cart() {
     try {
       setLoading(true);
       
+      // Store affiliate code in localStorage for testing (workaround for local webhook issue)
+      if (affiliateCode) {
+        localStorage.setItem('pendingAffiliateCode', affiliateCode);
+        localStorage.setItem('pendingAffiliateAmount', subtotal.toString());
+      }
+      
       const response = await fetch('http://localhost:5001/api/checkout/create-checkout-session', {
         method: 'POST',
         headers: {

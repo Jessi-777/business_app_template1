@@ -59,7 +59,7 @@ export default function AffiliateSalesReport() {
     <div className="min-h-screen bg-black text-white p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#949cbb] bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#e6e7ea] bg-clip-text text-transparent">
           Affiliate Sales Report
         </h1>
         <p className="text-white/60">Detailed breakdown of products sold by each affiliate</p>
@@ -86,7 +86,7 @@ export default function AffiliateSalesReport() {
           {filteredData.map((affiliate) => (
             <div
               key={affiliate.code}
-              className="bg-white/5 border border-white/10 rounded-lg overflow-hidden hover:border-indigo-500/50 transition-all"
+              className="bg-white/5 border border-white/10 rounded-lg overflow-hidden hover:border-[#333] transition-all"
             >
               {/* Affiliate Header */}
               <div

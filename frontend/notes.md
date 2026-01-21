@@ -7,3 +7,8 @@ The order records the affiliate code and items purchased
 View it in Orders page. Go to Admin → Orders, see an "Affiliate" column showing the code used for each order
 Click on any order to see the full details including all items purchased with that affiliate code
 However, to see a summary of which products each affiliate has sold, add that feature. Create "Affiliate Sales Report"
+
+
+TODO --> Create a tunnel so Stripe can reach your local server. It will give you a webhook secret like whsec_xxxxx - update your .env with it, restart the backend, then test checkout again.
+
+Or - want me to add a quick workaround that records the sale directly on the Success page for testing purposes? (This wouldn't work in production, but it's fine for local testing)

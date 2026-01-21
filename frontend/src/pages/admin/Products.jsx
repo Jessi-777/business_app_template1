@@ -164,14 +164,18 @@ export default function Products() {
 
         if (response.ok) {
           const newProduct = await response.json();
+          console.log('Product created:', newProduct);
           setProducts([newProduct, ...products]);
           alert('Product created successfully');
           setShowModal(false);
           setImageFile(null);
           setImagePreview(null);
+          // Reload products to ensure we have the latest data
+          fetchProducts();
         } else {
-          const error = await response.json();
-          alert(`Error: ${error.message || 'Failed to create product'}`);
+          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+          console.error('Server error:', errorData);
+          alert(`Error: ${errorData.message || 'Failed to create product'}`);
         }
       } else if (modalMode === 'edit') {
         // Update existing product
@@ -202,19 +206,28 @@ export default function Products() {
 
         if (response.ok) {
           const updatedProduct = await response.json();
+          console.log('Product updated:', updatedProduct);
           setProducts(products.map(p => p._id === selectedProduct._id ? updatedProduct : p));
           alert('Product updated successfully');
           setShowModal(false);
           setImageFile(null);
           setImagePreview(null);
+          // Reload products to ensure we have the latest data
+          fetchProducts();
         } else {
-          const error = await response.json();
-          alert(`Error: ${error.message || 'Failed to update product'}`);
+          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+          console.error('Server error:', errorData);
+          alert(`Error: ${errorData.message || 'Failed to update product'}`);
         }
       }
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Error saving product');
+      console.error('Full error details:', {
+        message: error.message,
+        stack: error.stack,
+        error: error
+      });
+      alert(`Error saving product: ${error.message || 'Network error or server unreachable'}`);
     } finally {
       setUploading(false);
     }
