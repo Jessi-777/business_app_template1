@@ -319,7 +319,7 @@ export default function Affiliates() {
                   step="0.5"
                   value={newAffiliate.commissionRate}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, commissionRate: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-indigo-800 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
                 />
               </div>
               <div className="flex gap-3 mt-6">
