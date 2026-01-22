@@ -189,7 +189,7 @@ export default function Dashboard() {
 
       {/* Affiliate Program Management */}
       {/* from-purple-500/10 to-indigo-500/10 */}
-      <div className="bg-gradient-to-br  bg-blue-300/20 backdrop-blur-md border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-500">
+      <div className="bg-gradient-to-br  bg-blue-300/10 backdrop-blur-md border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-500">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
             <span className="text-3xl">🤝</span>
@@ -197,7 +197,7 @@ export default function Dashboard() {
           </h2>
           <a 
             href="/admin/affiliates"
-            className="px-6 py-2 bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 rounded-xl hover:bg-indigo-500/30 transition-all duration-300 font-semibold"
+            className="px-6 py-2 bg-indigo-300/20 border border-indigo-500/10 text-indigo-300 rounded-xl hover:bg-indigo-200/10 transition-all duration-300 font-semibold"
           >
             Manage Affiliates
           </a>
@@ -298,15 +298,15 @@ export default function Dashboard() {
             </h4>
             <ul className="space-y-2 text-white/70 text-sm">
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Unique tracking links for each affiliate</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Real-time click and conversion tracking</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Automated commission calculations</span>
               </li>
             </ul>
@@ -319,15 +319,15 @@ export default function Dashboard() {
             </h4>
             <ul className="space-y-2 text-white/70 text-sm">
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Multiple payment options (PayPal, bank transfer)</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Monthly commission payouts</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-indigo-400">✓</span>
+                <span className="text-[#139a30]">✓</span>
                 <span>Dedicated affiliate support team</span>
               </li>
             </ul>
@@ -436,12 +436,12 @@ function AffiliateTier({ name, commission, requirement, affiliates, color, image
     <div className="relative rounded-xl p-4 border border-white/20 overflow-hidden group hover:scale-105 transition-transform duration-300">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-50 transition-opacity duration-300"
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-300"
         style={{ backgroundImage: `url(${image})` }}
       />
       
       {/* Glassmorphism Overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${color} backdrop-blur-sm`} />
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-60 group-hover:opacity-50 backdrop-blur-sm`} />
       
       {/* Content */}
       <div className="relative z-10">
