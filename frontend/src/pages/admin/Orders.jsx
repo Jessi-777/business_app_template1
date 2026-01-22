@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { API_URL } from "../../config";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -64,7 +65,7 @@ export default function Orders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/orders');
+      const response = await fetch(`${API_URL}/api/orders');
       const data = await response.json();
       
       // Check for new orders and play sound
@@ -131,7 +132,7 @@ export default function Orders() {
   const handleDeleteOrder = async (orderId) => {
     if (window.confirm('Are you sure you want to delete this order?')) {
       try {
-        const response = await fetch(`http://localhost:5001/api/orders/${orderId}`, {
+        const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
           method: 'DELETE'
         });
         
@@ -151,7 +152,7 @@ export default function Orders() {
   const handleSendToSupplier = async (order) => {
     if (window.confirm(`Send order ${order.orderNumber} to supplier?`)) {
       try {
-        const response = await fetch(`http://localhost:5001/api/orders/${order._id}/send-to-supplier`, {
+        const response = await fetch(`${API_URL}/api/orders/${order._id}/send-to-supplier`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ supplier: 'Printful' })
@@ -229,7 +230,7 @@ export default function Orders() {
       }
       
       if (modalMode === 'create') {
-        const response = await fetch('http://localhost:5001/api/orders', {
+        const response = await fetch(`${API_URL}/api/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(selectedOrder)
@@ -245,7 +246,7 @@ export default function Orders() {
           return;
         }
       } else if (modalMode === 'edit') {
-        const response = await fetch(`http://localhost:5001/api/orders/${selectedOrder._id}`, {
+        const response = await fetch(`${API_URL}/api/orders/${selectedOrder._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(selectedOrder)

@@ -29,7 +29,7 @@ export default function Pricing() {
           Pricing Management
         </h1>
         <p className="text-white/60">
-          Manage costs from your local printing shop and configure pricing rules
+          Manage costs from our local printing shop and configure pricing rules
         </p>
       </div>
 
@@ -53,7 +53,7 @@ export default function Pricing() {
           </div>
         </div>
         <p className="text-white/50 text-sm mt-2">
-          This margin is applied to calculate retail prices from your costs
+          This margin is applied to calculate retail prices from our costs
         </p>
       </div>
 

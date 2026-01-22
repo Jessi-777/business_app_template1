@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_URL } from "../../config";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -20,7 +21,7 @@ export default function Products() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/products');
+      const response = await fetch(`${API_URL}/api/products');
       const data = await response.json();
       setProducts(data);
       setLoading(false);
@@ -72,7 +73,7 @@ export default function Products() {
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        const response = await fetch(`http://localhost:5001/api/products/${productId}`, {
+        const response = await fetch(`${API_URL}/api/products/${productId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -156,7 +157,7 @@ export default function Products() {
           formData.append('image', selectedProduct.image);
         }
 
-        const response = await fetch('http://localhost:5001/api/products', {
+        const response = await fetch(`${API_URL}/api/products', {
           method: 'POST',
           body: formData
           // Add auth when available: headers: { 'Authorization': `Bearer ${token}` }
@@ -198,7 +199,7 @@ export default function Products() {
           formData.append('image', imageFile);
         }
 
-        const response = await fetch(`http://localhost:5001/api/products/${selectedProduct._id}`, {
+        const response = await fetch(`${API_URL}/api/products/${selectedProduct._id}`, {
           method: 'PUT',
           body: formData
           // Add auth when available: headers: { 'Authorization': `Bearer ${token}` }

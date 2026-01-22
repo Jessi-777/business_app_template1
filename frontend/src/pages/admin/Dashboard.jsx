@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_URL } from "../../config";
 
 export default function Dashboard() {
   const [analytics, setAnalytics] = useState({
@@ -20,10 +21,10 @@ export default function Dashboard() {
     unpaidCommission: 0,
     conversionRate: 0,
     tierBreakdown: {
-      Bronze: 0,
-      Silver: 0,
-      Gold: 0,
-      Platinum: 0
+      Trail: 0,
+      Ridge: 0,
+      Peak: 0,
+      Summit: 0
     }
   });
   const [topAffiliates, setTopAffiliates] = useState([]);
@@ -37,8 +38,8 @@ export default function Dashboard() {
   const fetchAffiliateData = async () => {
     try {
       const [statsRes, topRes] = await Promise.all([
-        fetch('http://localhost:5001/api/affiliates/stats'),
-        fetch('http://localhost:5001/api/affiliates/top?limit=5')
+        fetch(`${API_URL}/api/affiliates/stats`),
+        fetch(`${API_URL}/api/affiliates/top?limit=5`)
       ]);
       
       if (statsRes.ok) {
@@ -106,7 +107,7 @@ export default function Dashboard() {
           HNA Admin Dashboard
         </h1>
         <p className="text-white/70 text-lg">
-          Track performance, manage orders, and grow Human Nature Athletica
+          Our dashboard tracks performance, manage orders, etc. 
         </p>
       </div>
 
@@ -187,7 +188,8 @@ export default function Dashboard() {
       </div>
 
       {/* Affiliate Program Management */}
-      <div className="bg-gradient-to-br from-purple-500/10 to-indigo-500/10 backdrop-blur-md border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-500">
+      {/* from-purple-500/10 to-indigo-500/10 */}
+      <div className="bg-gradient-to-br  bg-blue-300/20 backdrop-blur-md border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-500">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
             <span className="text-3xl">🤝</span>
@@ -233,32 +235,36 @@ export default function Dashboard() {
           <h3 className="text-lg font-bold text-white mb-4">Commission Tiers</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <AffiliateTier 
-              name="Bronze"
+              name="Trail"
               commission="10%"
               requirement="0-19 sales"
-              affiliates={affiliateStats.tierBreakdown.Bronze}
-              color="from-orange-600 to-orange-700"
+              affiliates={affiliateStats.tierBreakdown.Trail}
+              color="from-emerald-600 to-emerald-700"
+              image="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"
             />
             <AffiliateTier 
-              name="Silver"
+              name="Ridge"
               commission="12%"
               requirement="20-49 sales"
-              affiliates={affiliateStats.tierBreakdown.Silver}
-              color="from-gray-400 to-gray-500"
+              affiliates={affiliateStats.tierBreakdown.Ridge}
+              color="from-teal-500 to-teal-600"
+              image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
             />
             <AffiliateTier 
-              name="Gold"
+              name="Peak"
               commission="15%"
               requirement="50-99 sales"
-              affiliates={affiliateStats.tierBreakdown.Gold}
-              color="from-yellow-400 to-yellow-600"
+              affiliates={affiliateStats.tierBreakdown.Peak}
+              color="from-sky-500 to-sky-600"
+              image="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80"
             />
             <AffiliateTier 
-              name="Platinum"
+              name="Summit"
               commission="20%"
               requirement="100+ sales"
-              affiliates={affiliateStats.tierBreakdown.Platinum}
-              color="from-purple-400 to-indigo-500"
+              affiliates={affiliateStats.tierBreakdown.Summit}
+              color="from-slate-300 to-slate-400"
+              image="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80"
             />
           </div>
         </div>
@@ -425,14 +431,26 @@ function SupplierStatus({ name, status, ordersInQueue }) {
   );
 }
 
-function AffiliateTier({ name, commission, requirement, affiliates, color }) {
+function AffiliateTier({ name, commission, requirement, affiliates, color, image }) {
   return (
-    <div className={`bg-gradient-to-br ${color} rounded-xl p-4 border border-white/20`}>
-      <h4 className="text-white font-bold text-lg mb-1">{name}</h4>
-      <div className="text-white/90 text-2xl font-bold mb-2">{commission}</div>
-      <div className="text-white/70 text-sm mb-3">{requirement}</div>
-      <div className="text-white/80 text-sm">
-        <span className="font-semibold">{affiliates}</span> affiliates
+    <div className="relative rounded-xl p-4 border border-white/20 overflow-hidden group hover:scale-105 transition-transform duration-300">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-50 transition-opacity duration-300"
+        style={{ backgroundImage: `url(${image})` }}
+      />
+      
+      {/* Glassmorphism Overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} backdrop-blur-sm`} />
+      
+      {/* Content */}
+      <div className="relative z-10">
+        <h4 className="text-white font-bold text-lg mb-1 drop-shadow-lg">{name}</h4>
+        <div className="text-white text-2xl font-bold mb-2 drop-shadow-lg">{commission}</div>
+        <div className="text-white/90 text-sm mb-3 drop-shadow-md">{requirement}</div>
+        <div className="text-white/95 text-sm drop-shadow-md">
+          <span className="font-semibold">{affiliates}</span> affiliates
+        </div>
       </div>
     </div>
   );
@@ -440,17 +458,17 @@ function AffiliateTier({ name, commission, requirement, affiliates, color }) {
 
 function TopAffiliate({ name, sales, revenue, tier }) {
   const tierColors = {
-    'Bronze': 'text-orange-400',
-    'Silver': 'text-gray-300',
-    'Gold': 'text-yellow-400',
-    'Platinum': 'text-purple-400'
+    'Trail': 'text-emerald-400',
+    'Ridge': 'text-teal-400',
+    'Peak': 'text-sky-400',
+    'Summit': 'text-slate-300'
   };
   
   return (
     <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-300">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 bg-gradient-to-br from-black to-[#46454f] rounded-full flex items-center justify-center text-white font-bold">
             {name.charAt(0)}
           </div>
           <div>

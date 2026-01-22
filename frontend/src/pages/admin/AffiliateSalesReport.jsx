@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../config';
 
 export default function AffiliateSalesReport() {
   const [reportData, setReportData] = useState([]);
@@ -12,7 +13,7 @@ export default function AffiliateSalesReport() {
 
   const fetchSalesReport = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/affiliates/sales-report');
+      const response = await fetch(`${API_URL}/api/affiliates/sales-report');
       const data = await response.json();
       setReportData(data);
       setLoading(false);

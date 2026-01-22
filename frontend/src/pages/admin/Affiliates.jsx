@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../../config';
 
 export default function Affiliates() {
   const [affiliates, setAffiliates] = useState([]);
@@ -20,7 +21,7 @@ export default function Affiliates() {
 
   const fetchAffiliates = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/affiliates');
+      const response = await fetch(`${API_URL}/api/affiliates`);
       if (response.ok) {
         const data = await response.json();
         setAffiliates(data);
@@ -34,7 +35,7 @@ export default function Affiliates() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/affiliates/stats');
+      const response = await fetch(`${API_URL}/api/affiliates/stats`);
       if (response.ok) {
         const data = await response.json();
         setStats(data);
@@ -47,7 +48,7 @@ export default function Affiliates() {
   const handleCreateAffiliate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/affiliates', {
+      const response = await fetch(`${API_URL}/api/affiliates`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAffiliate)
@@ -72,7 +73,7 @@ export default function Affiliates() {
     if (!confirm('Are you sure you want to delete this affiliate?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5001/api/affiliates/${id}`, {
+      const response = await fetch(`${API_URL}/api/affiliates/${id}`, {
         method: 'DELETE'
       });
 
@@ -87,7 +88,7 @@ export default function Affiliates() {
 
   const handlePayCommission = async (id, amount) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/affiliates/pay/${id}`, {
+      const response = await fetch(`${API_URL}/api/affiliates/pay/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
@@ -112,7 +113,6 @@ export default function Affiliates() {
     };
     return colors[tier] || colors.Trail;
   };
-
   const getStatusColor = (status) => {
     const colors = {
       active: 'bg-green-500/20 text-green-400 border-green-500/40',
@@ -140,7 +140,7 @@ export default function Affiliates() {
             🤝 Affiliate Management
           </h1>
           <p className="text-white/70 text-lg">
-            Managing affiliate partners and track their performance
+            Managing our affiliate partners and track their performance
           </p>
         </div>
         <div className="flex gap-3">
@@ -152,7 +152,7 @@ export default function Affiliates() {
           </Link>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-gradient-to-r from-[#1c1e32] to-[#816539]  text-white rounded-xl font-semibold hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-300"
+            className="px-6 py-3 bg-gradient-to-r from-black to-[#404697] text-white rounded-xl font-semibold hover:shadow-[0_0_30px_rgba(64,70,151,0.4)] transition-all duration-300"
           >
             + Create New Affiliate
           </button>
@@ -272,7 +272,7 @@ export default function Affiliates() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-2xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(99,102,241,0.3)]">
+          <div className="bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-2xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(64,70,151,0.3)]">
             <h2 className="text-2xl font-bold text-white mb-6">Create New Affiliate</h2>
             <form onSubmit={handleCreateAffiliate} className="space-y-4">
               <div>
@@ -282,7 +282,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.name}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, name: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-blue-500 focus:outline-none"
                   placeholder="John Doe"
                 />
               </div>
@@ -293,7 +293,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.email}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, email: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-blue-500 focus:outline-none"
                   placeholder="john@example.com"
                 />
               </div>
@@ -304,7 +304,7 @@ export default function Affiliates() {
                   required
                   value={newAffiliate.code}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, code: e.target.value.toUpperCase() })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:border-black focus:outline-none uppercase"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white font-mono focus:border-blue-500 focus:outline-none uppercase"
                   placeholder="JOHN10"
                   maxLength={20}
                 />
@@ -319,7 +319,7 @@ export default function Affiliates() {
                   step="0.5"
                   value={newAffiliate.commissionRate}
                   onChange={(e) => setNewAffiliate({ ...newAffiliate, commissionRate: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-black focus:outline-none"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div className="flex gap-3 mt-6">
