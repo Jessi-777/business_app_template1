@@ -21,8 +21,8 @@ const affiliateSchema = new mongoose.Schema({
   },
   tier: {
     type: String,
-    enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
-    default: 'Bronze'
+    enum: ['Trail', 'Ridge', 'Peak', 'Summit'],
+    default: 'Trail'
   },
   commissionRate: {
     type: Number,
@@ -87,16 +87,16 @@ affiliateSchema.virtual('conversionRate').get(function() {
 // Update tier based on total sales
 affiliateSchema.methods.updateTier = function() {
   if (this.totalSales >= 100) {
-    this.tier = 'Platinum';
+    this.tier = 'Summit';
     this.commissionRate = 20;
   } else if (this.totalSales >= 50) {
-    this.tier = 'Gold';
+    this.tier = 'Peak';
     this.commissionRate = 15;
   } else if (this.totalSales >= 20) {
-    this.tier = 'Silver';
+    this.tier = 'Ridge';
     this.commissionRate = 12;
   } else {
-    this.tier = 'Bronze';
+    this.tier = 'Trail';
     this.commissionRate = 10;
   }
 };

@@ -105,12 +105,12 @@ export default function Affiliates() {
 
   const getTierColor = (tier) => {
     const colors = {
-      Bronze: 'bg-orange-500/20 text-orange-400 border-orange-500/40',
-      Silver: 'bg-gray-400/20 text-gray-300 border-gray-400/40',
-      Gold: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
-      Platinum: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40'
+      Trail: 'bg-emerald-700/20 text-emerald-400 border-emerald-600/40',
+      Ridge: 'bg-teal-600/20 text-teal-400 border-teal-500/40',
+      Peak: 'bg-sky-600/20 text-sky-400 border-sky-500/40',
+      Summit: 'bg-slate-300/20 text-slate-200 border-slate-400/40'
     };
-    return colors[tier] || colors.Bronze;
+    return colors[tier] || colors.Trail;
   };
 
   const getStatusColor = (status) => {
