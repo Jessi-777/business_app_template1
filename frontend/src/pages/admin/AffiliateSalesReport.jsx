@@ -13,7 +13,7 @@ export default function AffiliateSalesReport() {
 
   const fetchSalesReport = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/affiliates/sales-report');
+      const response = await fetch(`${API_URL}/api/affiliates/sales-report`);
       const data = await response.json();
       setReportData(data);
       setLoading(false);
@@ -116,7 +116,7 @@ export default function AffiliateSalesReport() {
                         <code className="px-2 py-1 bg-indigo-500/20 text-indigo-400 rounded text-sm font-mono">
                           {affiliate.code}
                         </code>
-                        <span className={`px-2 py-1 rounded text-xs border ${getTierColor(affiliate.tier)}`}>
+                        <span className={'px-2 py-1 rounded text-xs border ' + getTierColor(affiliate.tier)}>
                           {affiliate.tier}
                         </span>
                       </div>

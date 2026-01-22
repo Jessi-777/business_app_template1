@@ -65,7 +65,7 @@ export default function Orders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/orders');
+      const response = await fetch(`${API_URL}/api/orders`);
       const data = await response.json();
       
       // Check for new orders and play sound
@@ -230,7 +230,7 @@ export default function Orders() {
       }
       
       if (modalMode === 'create') {
-        const response = await fetch(`${API_URL}/api/orders', {
+        const response = await fetch(`${API_URL}/api/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(selectedOrder)
