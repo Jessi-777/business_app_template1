@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
-import { API_URL } from "../config";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -13,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/products`);
+        const response = await fetch('http://localhost:5001/api/products');
         const data = await response.json();
         // Get featured products (limit to 6 for homepage)
         setProducts(data.filter(p => p.isActive !== false).slice(0, 6));
@@ -57,9 +56,22 @@ export default function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)] animate-pulse"></div>
         </div>
 
+
+{/* Hero Image Background */}
+<div className="absolute inset-0 overflow-hidden">
+  <img
+    src="/assets/boho-hero.png"
+    alt="HNA Human Nature Athletica"
+    className="absolute top-5 left-0 w-full h-full object-cover opacity-50 hero-img"
+  />
+
+  {/* Soft animated glow layer */} 
+  {/* hero-glow" */}
+  <div className="absolute inset-0 hero-glow"></div>
+</div>
         {/* Video Background - COMMENTED FOR FUTURE USE - Uncomment below to enable */}
         
-        <video
+        {/* <video
           autoPlay
           loop
           muted
@@ -69,19 +81,21 @@ export default function Home() {
         >
           <source src="/assets/hna-vid1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
+        </video> */}
        
 
         {/* Background Music with Autoplay */}
         <audio id="background-music" loop autoPlay>
-          <source src="/assets/Dimples_ichoose_love.mp3" type="audio/mpeg" />
+          {/* <source src="/assets/Dimples_ichoose_love.mp3" type="audio/mpeg" /> */}
+          <source src="/assets/higher-tica-rey.mp3" type="audio/mpeg" />
+
           Your browser does not support the audio element.
         </audio>
 
         {/* Music Control Button */}
         <button
           onClick={toggleMusic}
-          className="absolute top-8 right-8 z-20 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-lg"
+          className="absolute top-8 right-8 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-lg"
           aria-label={isMusicPlaying ? 'Pause music' : 'Play music'}
           title={isMusicPlaying ? 'Pause music' : 'Play music'}
         >
@@ -118,7 +132,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Link
               to="/shop"
-              className="group relative px-12 py-5 text-lg font-bold text-black bg-[#b3b3b7d0] rounded-lg
+              className="group relative px-12 py-5 text-lg font-bold text-black bg-white rounded-xl
                        hover:scale-110 transition-all duration-300
                        shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(255,255,255,0.5)]
                        overflow-hidden"

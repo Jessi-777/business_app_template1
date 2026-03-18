@@ -1,59 +1,112 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import connectDB from './config/db.js';
-import productRoutes from './routes/productRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-import userRoutes from './routes/userRoutes.js';
-import stripeRoutes from './routes/stripeRoutes.js';
-import supplierRoutes from './routes/supplierRoutes.js';
-import affiliateRoutes from './routes/affiliateRoutes.js';
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/db.js";
+
+import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import stripeRoutes from "./routes/stripeRoutes.js";
+import supplierRoutes from "./routes/supplierRoutes.js";
+import affiliateRoutes from "./routes/affiliateRoutes.js";
+import affiliatePortalRoutes from "./routes/affiliatePortalRoutes.js";
+import vendorPortalRoutes from "./routes/vendorPortalRoutes.js"; // ← ADD
+
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+
+import nodemailer from "nodemailer";
 
 dotenv.config();
 connectDB();
 
 const app = express();
-    const port = process.env.PORT || 5000;
-    //  const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5001;
 
-// IMPORTANT: Stripe webhook needs raw body, so add it BEFORE other middleware  
-app.use('/api/checkout/webhook', express.raw({ type: 'application/json' }));
+/* ---------------------------------------------------
+   Stripe Webhook (MUST come before express.json)
+--------------------------------------------------- */
+app.use("/api/checkout/webhook", express.raw({ type: "application/json" }));
 
-// CORS - allow development ports in development, restrict in production
-const allowedOrigins = process.env.NODE_ENV === 'production' 
-  ? [process.env.CLIENT_URL]
-  : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+/* ---------------------------------------------------
+   CORS
+--------------------------------------------------- */
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? [process.env.CLIENT_URL]
+    : [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5001",
+      ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("CORS not allowed"));
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 
-app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+/* ---------------------------------------------------
+   Body Parsers
+--------------------------------------------------- */
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-// Routes
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/checkout', stripeRoutes);
+/* ---------------------------------------------------
+   Root Route (Prevents Not Found /)
+--------------------------------------------------- */
+app.get("/", (req, res) => {
+  res.json({
+    status: "running",
+    api: "HNA Vault API",
+    version: "1.0",
+  });
+});
+
+/* ---------------------------------------------------
+   Health Check
+--------------------------------------------------- */
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
+/* ---------------------------------------------------
+   API Routes
+--------------------------------------------------- */
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/checkout", stripeRoutes);
+
+// Portal MUST come first
+app.use('/api/affiliates/portal', affiliatePortalRoutes);
+
+// General affiliates AFTER
 app.use('/api/affiliates', affiliateRoutes);
+
 app.use('/api/suppliers', supplierRoutes);
 
-// Error handling
+// Vendor portal                               ← ADD
+app.use('/api/vendors/portal', vendorPortalRoutes);
+
+/* ---------------------------------------------------
+   Error Middleware
+--------------------------------------------------- */
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+/* ---------------------------------------------------
+   Server Start
+--------------------------------------------------- */
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});

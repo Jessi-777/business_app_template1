@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { API_URL } from "../../config";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -21,7 +20,7 @@ export default function Products() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/products`);
+      const response = await fetch('http://localhost:5001/api/products');
       const data = await response.json();
       setProducts(data);
       setLoading(false);
@@ -73,7 +72,7 @@ export default function Products() {
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        const response = await fetch(`${API_URL}/api/products/${productId}`, {
+        const response = await fetch(`http://localhost:5001/api/products/${productId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -157,7 +156,7 @@ export default function Products() {
           formData.append('image', selectedProduct.image);
         }
 
-        const response = await fetch(`${API_URL}/api/products`, {
+        const response = await fetch('http://localhost:5001/api/products', {
           method: 'POST',
           body: formData
           // Add auth when available: headers: { 'Authorization': `Bearer ${token}` }
@@ -165,18 +164,14 @@ export default function Products() {
 
         if (response.ok) {
           const newProduct = await response.json();
-          console.log('Product created:', newProduct);
           setProducts([newProduct, ...products]);
           alert('Product created successfully');
           setShowModal(false);
           setImageFile(null);
           setImagePreview(null);
-          // Reload products to ensure we have the latest data
-          fetchProducts();
         } else {
-          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-          console.error('Server error:', errorData);
-          alert(`Error: ${errorData.message || 'Failed to create product'}`);
+          const error = await response.json();
+          alert(`Error: ${error.message || 'Failed to create product'}`);
         }
       } else if (modalMode === 'edit') {
         // Update existing product
@@ -199,7 +194,7 @@ export default function Products() {
           formData.append('image', imageFile);
         }
 
-        const response = await fetch(`${API_URL}/api/products/${selectedProduct._id}`, {
+        const response = await fetch(`http://localhost:5001/api/products/${selectedProduct._id}`, {
           method: 'PUT',
           body: formData
           // Add auth when available: headers: { 'Authorization': `Bearer ${token}` }
@@ -207,28 +202,19 @@ export default function Products() {
 
         if (response.ok) {
           const updatedProduct = await response.json();
-          console.log('Product updated:', updatedProduct);
           setProducts(products.map(p => p._id === selectedProduct._id ? updatedProduct : p));
           alert('Product updated successfully');
           setShowModal(false);
           setImageFile(null);
           setImagePreview(null);
-          // Reload products to ensure we have the latest data
-          fetchProducts();
         } else {
-          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-          console.error('Server error:', errorData);
-          alert(`Error: ${errorData.message || 'Failed to update product'}`);
+          const error = await response.json();
+          alert(`Error: ${error.message || 'Failed to update product'}`);
         }
       }
     } catch (error) {
       console.error('Error saving product:', error);
-      console.error('Full error details:', {
-        message: error.message,
-        stack: error.stack,
-        error: error
-      });
-      alert(`Error saving product: ${error.message || 'Network error or server unreachable'}`);
+      alert('Error saving product');
     } finally {
       setUploading(false);
     }
