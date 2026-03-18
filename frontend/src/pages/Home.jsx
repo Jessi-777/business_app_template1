@@ -62,7 +62,7 @@ export default function Home() {
   <img
     src="/assets/boho-hero.png"
     alt="HNA Human Nature Athletica"
-    className="absolute top-5 left-0 w-full h-full object-cover opacity-50 hero-img"
+    className="absolute top-0 left-0 w-full h-full object-cover opacity-50 hero-img"
   />
 
   {/* Soft animated glow layer */} 
