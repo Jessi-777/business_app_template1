@@ -27,14 +27,13 @@ const transporter = nodemailer.createTransport({
 // ✅ Vendor config — Jar R @ Shirtzilla VS Hatsquatch
 const VENDOR_EMAIL = 'shirtzillavs@gmail.com';
 const VENDOR_CUT = 75;
-const BUNDLE_NAMES = ['Hat', 'T-Shirt', 'Hoodie']; // must match your product names
+const BUNDLE_NAMES = ['Hat', 'T-Shirt', 'Hoodie'];
 
 // Create a Stripe checkout session
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    const { items, affiliateCode } = req.body; // [{ name, price, quantity, image }], affiliateCode (optional)
+    const { items, affiliateCode } = req.body;
 
-    // Track affiliate click if code provided
     let affiliate = null;
     if (affiliateCode) {
       affiliate = await Affiliate.findOne({ code: affiliateCode.toUpperCase(), status: 'active' });
@@ -96,19 +95,16 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     event = JSON.parse(req.body.toString());
   }
 
-  // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
 
     try {
-      // Get full session details with line items
       const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
         expand: ['line_items', 'customer_details']
       });
 
       const affiliateCode = session.metadata?.affiliateCode;
       const totalAmount = session.amount_total / 100;
-
       const orderNumber = `HNA-${Date.now()}`;
 
       const items = fullSession.line_items.data.map(item => ({
@@ -117,6 +113,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         price: item.price.unit_amount / 100,
         image: item.price.product.images?.[0] || ''
       }));
+
+      // ✅ Determine vendor type and fulfillment method
+      // Update this logic when JayR's vendorType is stored on products/orders
+      const vendorType = 'external'; // default — change to 'inhouse' for JayR's orders
+      const fulfillmentMethod = vendorType === 'inhouse' ? 'ship_to_hna' : 'ship_direct';
 
       const orderData = {
         orderNumber,
@@ -131,10 +132,19 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         },
         totalPrice: totalAmount,
         paymentStatus: 'Paid',
-        status: 'Processing'
+        status: 'Processing',
+        vendorType,
+        fulfillmentMethod,
+        statusHistory: [
+          {
+            status: 'Processing',
+            updatedBy: 'stripe_webhook',
+            timestamp: new Date()
+          }
+        ]
       };
 
-      // If affiliate code exists, process commission
+      // ✅ Process affiliate commission if code exists
       if (affiliateCode) {
         const affiliate = await Affiliate.findOne({ code: affiliateCode.toUpperCase(), status: 'active' });
 
@@ -144,7 +154,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
           orderData.affiliate = {
             code: affiliateCode.toUpperCase(),
             affiliateId: affiliate._id,
-            commission: commission,
+            commission,
             commissionPaid: false
           };
 
@@ -153,10 +163,39 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         }
       }
 
-      await Order.create(orderData);
-      console.log(`✅ Order ${orderNumber} created with payment status: Paid`);
+      const createdOrder = await Order.create(orderData);
+      console.log(`✅ Order ${orderNumber} created — vendorType: ${vendorType}, fulfillment: ${fulfillmentMethod}`);
 
-      // ✅ Notify Jar R if order contains bundle items
+      // ✅ If in-house vendor, POST order to JayR's endpoint
+      if (vendorType === 'inhouse' && process.env.JAYR_WEBHOOK_URL) {
+        try {
+          await fetch(process.env.JAYR_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': process.env.JAYR_API_KEY || ''
+            },
+            body: JSON.stringify({
+              orderNumber: orderData.orderNumber,
+              items: orderData.items,
+              customer: orderData.customer,
+              totalPrice: orderData.totalPrice
+            })
+          });
+
+          await Order.findOneAndUpdate(
+            { orderNumber },
+            { vendorWebhookSent: true, vendorWebhookSentAt: new Date() }
+          );
+
+          console.log(`📡 Order ${orderNumber} sent to JayR's endpoint`);
+        } catch (err) {
+          // Non-fatal — order is created, webhook delivery failed
+          console.error(`JayR webhook failed for order ${orderNumber}:`, err.message);
+        }
+      }
+
+      // ✅ Notify Jar R via email if order contains bundle items (external path)
       const isBundleOrder = items.some(item =>
         BUNDLE_NAMES.some(b => item.name.toLowerCase().includes(b.toLowerCase()))
       );
@@ -225,26 +264,15 @@ export default router;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // import express from 'express';
 // import Stripe from 'stripe';
+// import nodemailer from 'nodemailer';
 // import { protect } from '../middleware/authMiddleware.js';
 // import Order from '../models/Order.js';
 // import Affiliate from '../models/Affiliate.js';
 // import dotenv from 'dotenv';
-// import nodemailer from 'nodemailer';
 
-// dotenv.config(); // Make sure environment variables are loaded
+// dotenv.config();
 
 // const router = express.Router();
 
@@ -252,6 +280,20 @@ export default router;
 // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 //   apiVersion: '2022-11-15',
 // });
+
+// // ✅ Nodemailer transporter for vendor notifications
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+// });
+
+// // ✅ Vendor config — Jar R @ Shirtzilla VS Hatsquatch
+// const VENDOR_EMAIL = 'shirtzillavs@gmail.com';
+// const VENDOR_CUT = 75;
+// const BUNDLE_NAMES = ['Hat', 'T-Shirt', 'Hoodie']; // must match your product names
 
 // // Create a Stripe checkout session
 // router.post('/create-checkout-session', async (req, res) => {
@@ -271,11 +313,11 @@ export default router;
 //     const line_items = items.map(item => ({
 //       price_data: {
 //         currency: 'usd',
-//         product_data: { 
+//         product_data: {
 //           name: item.name,
 //           images: item.image ? [item.image.startsWith('http') ? item.image : `${process.env.CLIENT_URL}${item.image}`] : []
 //         },
-//         unit_amount: Math.round(item.price * 100), // Stripe uses cents
+//         unit_amount: Math.round(item.price * 100),
 //       },
 //       quantity: item.quantity,
 //     }));
@@ -305,7 +347,6 @@ export default router;
 
 //   let event;
 
-//   // Skip webhook verification in development if secret is not configured
 //   const isDevelopment = process.env.NODE_ENV !== 'production';
 //   const hasWebhookSecret = webhookSecret && !webhookSecret.includes('your_webhook_signing_secret');
 
@@ -317,7 +358,6 @@ export default router;
 //       return res.status(400).send(`Webhook Error: ${err.message}`);
 //     }
 //   } else {
-//     // Development mode without webhook secret - parse body directly
 //     console.log('⚠️  DEV MODE: Webhook signature verification skipped');
 //     event = JSON.parse(req.body.toString());
 //   }
@@ -325,7 +365,7 @@ export default router;
 //   // Handle the checkout.session.completed event
 //   if (event.type === 'checkout.session.completed') {
 //     const session = event.data.object;
-    
+
 //     try {
 //       // Get full session details with line items
 //       const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
@@ -333,19 +373,17 @@ export default router;
 //       });
 
 //       const affiliateCode = session.metadata?.affiliateCode;
-//       const totalAmount = session.amount_total / 100; // Convert from cents
+//       const totalAmount = session.amount_total / 100;
 
-//       // Create order
 //       const orderNumber = `HNA-${Date.now()}`;
-      
-//       // Extract items from Stripe's line_items
+
 //       const items = fullSession.line_items.data.map(item => ({
 //         name: item.description || item.price.product.name,
 //         quantity: item.quantity,
-//         price: item.price.unit_amount / 100, // Convert from cents
+//         price: item.price.unit_amount / 100,
 //         image: item.price.product.images?.[0] || ''
 //       }));
-      
+
 //       const orderData = {
 //         orderNumber,
 //         items,
@@ -365,10 +403,10 @@ export default router;
 //       // If affiliate code exists, process commission
 //       if (affiliateCode) {
 //         const affiliate = await Affiliate.findOne({ code: affiliateCode.toUpperCase(), status: 'active' });
-        
+
 //         if (affiliate) {
 //           const commission = (totalAmount * affiliate.commissionRate) / 100;
-          
+
 //           orderData.affiliate = {
 //             code: affiliateCode.toUpperCase(),
 //             affiliateId: affiliate._id,
@@ -376,7 +414,6 @@ export default router;
 //             commissionPaid: false
 //           };
 
-//           // Record the sale for the affiliate
 //           affiliate.addSale(totalAmount);
 //           await affiliate.save();
 //         }
@@ -384,7 +421,63 @@ export default router;
 
 //       await Order.create(orderData);
 //       console.log(`✅ Order ${orderNumber} created with payment status: Paid`);
-      
+
+//       // ✅ Notify Jar R if order contains bundle items
+//       const isBundleOrder = items.some(item =>
+//         BUNDLE_NAMES.some(b => item.name.toLowerCase().includes(b.toLowerCase()))
+//       );
+
+//       if (isBundleOrder) {
+//         await transporter.sendMail({
+//           from: `"HNA Store" <${process.env.EMAIL_USER}>`,
+//           to: VENDOR_EMAIL,
+//           subject: `New Bundle Order to Fulfill — ${orderNumber}`,
+//           html: `
+//             <div style="font-family:sans-serif;max-width:560px;margin:auto;color:#222">
+//               <h2 style="border-bottom:2px solid #000;padding-bottom:8px">
+//                 New Bundle Order 🧢👕🧥
+//               </h2>
+//               <p>Hey Jar R! A bundle just sold. Here's what you need to fulfill:</p>
+//               <table style="width:100%;border-collapse:collapse;margin:16px 0">
+//                 <tr style="background:#f5f5f5">
+//                   <td style="padding:10px;font-weight:bold">Order #</td>
+//                   <td style="padding:10px">${orderNumber}</td>
+//                 </tr>
+//                 <tr>
+//                   <td style="padding:10px;font-weight:bold">Items</td>
+//                   <td style="padding:10px">${items.map(i => `${i.quantity}x ${i.name}`).join('<br/>')}</td>
+//                 </tr>
+//                 <tr style="background:#f5f5f5">
+//                   <td style="padding:10px;font-weight:bold">Ship To</td>
+//                   <td style="padding:10px">
+//                     ${orderData.customer.name}<br/>
+//                     ${orderData.customer.address}<br/>
+//                     ${orderData.customer.city}, ${orderData.customer.zipCode} ${orderData.customer.country}
+//                   </td>
+//                 </tr>
+//                 <tr>
+//                   <td style="padding:10px;font-weight:bold">Order Total</td>
+//                   <td style="padding:10px">$${totalAmount.toFixed(2)}</td>
+//                 </tr>
+//                 <tr style="background:#f5f5f5">
+//                   <td style="padding:10px;font-weight:bold">Your Payout</td>
+//                   <td style="padding:10px;color:#2a7a2a;font-size:18px;font-weight:bold">
+//                     $${VENDOR_CUT}.00
+//                   </td>
+//                 </tr>
+//               </table>
+//               <p style="background:#fffbe6;border-left:4px solid #f5c518;padding:12px;border-radius:4px">
+//                 Please ship within <strong>3–5 business days</strong> and reply with a tracking number.
+//               </p>
+//               <p style="color:#888;font-size:12px;margin-top:32px">
+//                 Questions? Reply to this email — HNA Team
+//               </p>
+//             </div>
+//           `,
+//         });
+//         console.log(`📧 Vendor email sent to Jar R for order ${orderNumber}`);
+//       }
+
 //     } catch (error) {
 //       console.error('Error processing webhook:', error);
 //     }
@@ -394,4 +487,7 @@ export default router;
 // });
 
 // export default router;
+
+
+
 

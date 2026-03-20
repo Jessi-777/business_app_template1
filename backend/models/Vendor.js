@@ -102,3 +102,6 @@ const vendorSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.model('Vendor', vendorSchema);
+
+
+  // commissionRate: Number,       // HNA's cut of their sales
