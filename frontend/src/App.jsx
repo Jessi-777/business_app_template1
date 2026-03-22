@@ -11,7 +11,7 @@ import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
-/* Lazy Loaded Pages (performance boost) */
+/* Lazy Loaded Pages */
 const Home    = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Cart    = lazy(() => import("./pages/Cart"));
@@ -20,16 +20,21 @@ const About   = lazy(() => import("./pages/About"));
 const Success = lazy(() => import("./pages/Success"));
 
 /* Admin */
-const Dashboard          = lazy(() => import("./pages/admin/Dashboard"));
-const Orders             = lazy(() => import("./pages/admin/Orders"));
-const Products           = lazy(() => import("./pages/admin/Products"));
-const Pricing            = lazy(() => import("./pages/admin/Pricing"));
-const Affiliates         = lazy(() => import("./pages/admin/Affiliates"));
-const AffiliateSalesReport = lazy(() => import("./pages/admin/AffiliateSalesReport")); // ← was broken
+const Dashboard            = lazy(() => import("./pages/admin/Dashboard"));
+const Orders               = lazy(() => import("./pages/admin/Orders"));
+const Products             = lazy(() => import("./pages/admin/Products"));
+const Pricing              = lazy(() => import("./pages/admin/Pricing"));
+const Affiliates           = lazy(() => import("./pages/admin/Affiliates"));
+const AffiliateSalesReport = lazy(() => import("./pages/admin/AffiliateSalesReport"));
+const Brands               = lazy(() => import("./pages/admin/Brands"));
 
 /* Portals — standalone, no layout wrapper */
 const AffiliatePortal = lazy(() => import("./pages/portal/AffiliatePortal"));
 const VendorPortal    = lazy(() => import("./pages/vendor/VendorPortal"));
+
+/* Brand — standalone, no layout wrapper */
+const BrandStorefront = lazy(() => import("./pages/store/BrandStorefront"));
+const BrandDashboard  = lazy(() => import("./pages/brand/BrandDashboard"));
 
 /* 404 */
 const NotFound = () => (
@@ -56,22 +61,23 @@ export default function App() {
 
                 {/* ---------------- PUBLIC SITE ---------------- */}
                 <Route element={<MainLayout />}>
-                  <Route path="/"           element={<Home />} />
-                  <Route path="/about"      element={<About />} />
-                  <Route path="/shop"       element={<Shop />} />
+                  <Route path="/"            element={<Home />} />
+                  <Route path="/about"       element={<About />} />
+                  <Route path="/shop"        element={<Shop />} />
                   <Route path="/product/:id" element={<Product />} />
-                  <Route path="/cart"       element={<Cart />} />
-                  <Route path="/success"    element={<Success />} />
+                  <Route path="/cart"        element={<Cart />} />
+                  <Route path="/success"     element={<Success />} />
                 </Route>
 
                 {/* ---------------- ADMIN ---------------- */}
                 <Route path="/admin" element={<AdminLayout />}>
-                  <Route index             element={<Dashboard />} />
-                  <Route path="orders"     element={<Orders />} />
-                  <Route path="products"   element={<Products />} />
-                  <Route path="affiliates" element={<Affiliates />} />
+                  <Route index                          element={<Dashboard />} />
+                  <Route path="orders"                  element={<Orders />} />
+                  <Route path="products"                element={<Products />} />
+                  <Route path="affiliates"              element={<Affiliates />} />
                   <Route path="affiliates/sales-report" element={<AffiliateSalesReport />} />
-                  <Route path="pricing"    element={<Pricing />} />
+                  <Route path="pricing"                 element={<Pricing />} />
+                  <Route path="brands"                  element={<Brands />} />
                 </Route>
 
                 {/* ---------------- AFFILIATE PORTAL ---------------- */}
@@ -79,6 +85,14 @@ export default function App() {
 
                 {/* ---------------- VENDOR PORTAL ---------------- */}
                 <Route path="/vendor" element={<VendorPortal />} />
+
+                {/* ---------------- BRAND STOREFRONT ---------------- */}
+                {/* /store/italylucas → brand partner's public storefront */}
+                <Route path="/store/:slug" element={<BrandStorefront />} />
+
+                {/* ---------------- BRAND DASHBOARD ---------------- */}
+                {/* /brand → brand owner's private dashboard */}
+                <Route path="/brand" element={<BrandDashboard />} />
 
                 {/* ---------------- 404 ---------------- */}
                 <Route path="*" element={<NotFound />} />

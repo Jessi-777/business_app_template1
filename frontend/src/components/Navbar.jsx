@@ -37,6 +37,18 @@ export default function Navbar() {
         >
           {t('nav.shop')}
         </Link>
+     
+ {/* ← NEW */}
+  <a
+    href="/hna-college-program.html"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-yellow-400/80 hover:text-yellow-300 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(232,192,64,0.5)] relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-yellow-400/80 after:transition-all after:duration-300 hover:after:w-full"
+  >
+    Athletes
+  </a>
+
+
         <Link
           to="/cart"
           className="relative text-white/70 hover:text-white transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white/80 after:transition-all after:duration-300 hover:after:w-full"
